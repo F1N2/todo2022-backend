@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -9,8 +8,7 @@ export class AuthService {
   async validate(email: string, password: string) {
     try {
       const user = await this.userService.findByEmail(email);
-      const isPasswordMatch = compare(user.password, password);
-      if (!isPasswordMatch)
+      if (user.password != password)
         throw new HttpException(
           '잘못된 인증 정보입니다.',
           HttpStatus.BAD_REQUEST,

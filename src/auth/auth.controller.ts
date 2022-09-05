@@ -15,8 +15,9 @@ export class AuthController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async info(@Req() req) {
-    req.user.password = null;
-    return req.user;
+    const user = req.user;
+    user.password = null;
+    return user;
   }
 
   @UseGuards(AuthGuard('local'))
@@ -32,7 +33,6 @@ export class AuthController {
     );
     user.password = undefined;
     return res.send({
-      statusCode: 200,
       ...user,
       accessToken: token,
     });
