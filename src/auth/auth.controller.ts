@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
@@ -23,10 +15,10 @@ export class AuthController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async info(@Req() req) {
+    req.user.password = null;
     return req.user;
   }
 
-  @HttpCode(200)
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req, @Res() res) {
@@ -40,6 +32,7 @@ export class AuthController {
     );
     user.password = undefined;
     return res.send({
+      statusCode: 200,
       ...user,
       accessToken: token,
     });

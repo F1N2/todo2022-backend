@@ -20,16 +20,13 @@ export class UserService {
       user.password = null;
       return user;
     } catch (e) {
-      if (/Duplicate/.test(e.detail))
+      if (/Duplicate/.test(e.message))
         throw new HttpException(
           'Email is already exists',
           HttpStatus.BAD_REQUEST,
         );
-      else
-        throw new HttpException(
-          'Server error',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+      console.error(e);
+      throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
