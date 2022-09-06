@@ -13,7 +13,7 @@ export class FindTodayOptionDto {
 
   @IsBoolean()
   @IsOptional()
-  now = false;
+  now = true;
 
   @IsNumber()
   @IsOptional()

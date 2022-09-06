@@ -13,7 +13,7 @@ export class FindTodoOptionDto {
 
   @IsBoolean()
   @IsOptional()
-  now = false;
+  now = true;
 
   @IsNumber()
   @IsOptional()
