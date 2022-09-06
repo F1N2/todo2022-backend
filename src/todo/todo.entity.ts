@@ -6,19 +6,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('user')
-export class User {
+@Entity('todo')
+export class Todo {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false, unique: true })
-  email: string;
+  user_id: string;
 
   @Column({ nullable: false })
-  password: string;
+  content: string;
+
+  @Column({ nullable: false })
+  complete: boolean;
 
   @CreateDateColumn()
   created: Date;
