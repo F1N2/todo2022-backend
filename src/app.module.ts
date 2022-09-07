@@ -10,11 +10,7 @@ import { TodayModule } from './today/today.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        process.env.NODE_ENV == 'production'
-          ? '.production.env'
-          : '.development.env',
-      ],
+      envFilePath: ['.env'],
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
