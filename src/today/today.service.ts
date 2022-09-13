@@ -39,19 +39,24 @@ export class TodayService {
       },
       where: {
         ...(userid && { user_id: userid }),
-        ...(Boolean(onlyMine) && { user_id: user.id }),
-        created: Boolean(now)
-          ? Between(
-              new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-            )
-          : from && to
-          ? Between(new Date(+from), new Date(+to))
-          : from
-          ? MoreThanOrEqual(new Date(+from))
-          : to
-          ? LessThanOrEqual(new Date(+to))
-          : undefined,
+        ...(onlyMine == 'true' && { user_id: user.id }),
+        created:
+          now == 'true'
+            ? Between(
+                new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                new Date(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate() + 1,
+                ),
+              )
+            : from && to
+            ? Between(new Date(+from), new Date(+to))
+            : from
+            ? MoreThanOrEqual(new Date(+from))
+            : to
+            ? LessThanOrEqual(new Date(+to))
+            : undefined,
       },
       skip: (+page - 1) * +count,
       take: +count,
