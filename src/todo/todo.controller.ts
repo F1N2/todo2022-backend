@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -30,7 +31,7 @@ export class TodoController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async findAll(@Req() req, @Body() data: FindTodoOptionDto) {
+  async findAll(@Req() req, @Query() data: FindTodoOptionDto) {
     return await this.todoService.findAll(data, req.user);
   }
 

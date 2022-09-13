@@ -1,7 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTodayDto } from './dto/create-today.dto';
 import { UpdateTodayDto } from './dto/update-today.dto';
-import { Between, DeleteResult, Repository, UpdateResult } from 'typeorm';
+import {
+  Between,
+  DeleteResult,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
 import { Today } from './today.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindTodayOptionDto } from './dto/find-today-option.dto';
@@ -24,7 +31,7 @@ export class TodayService {
   }
 
   async findAll(data: FindTodayOptionDto, user: User): Promise<Today[]> {
-    const { now, page, count, sort, userid, onlyMine } = data;
+    const { now, page, count, sort, userid, onlyMine, from, to } = data;
     const date = new Date();
     return await this.todayRepository.find({
       order: {
@@ -32,16 +39,22 @@ export class TodayService {
       },
       where: {
         ...(userid && { user_id: userid }),
-        ...(onlyMine && { user_id: user.id }),
-        ...(now && {
-          created: Between(
-            new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-            new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-          ),
-        }),
+        ...(Boolean(onlyMine) && { user_id: user.id }),
+        created: Boolean(now)
+          ? Between(
+              new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+            )
+          : from && to
+          ? Between(new Date(+from), new Date(+to))
+          : from
+          ? MoreThanOrEqual(new Date(+from))
+          : to
+          ? LessThanOrEqual(new Date(+to))
+          : undefined,
       },
-      skip: (page - 1) * count,
-      take: count,
+      skip: (+page - 1) * +count,
+      take: +count,
     });
   }
 

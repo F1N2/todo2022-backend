@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { TodayService } from './today.service';
 import { CreateTodayDto } from './dto/create-today.dto';
@@ -30,7 +31,7 @@ export class TodayController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async findAll(@Req() req, @Body() data: FindTodayOptionDto) {
+  async findAll(@Req() req, @Query() data: FindTodayOptionDto) {
     return await this.todayService.findAll(data, req.user);
   }
 

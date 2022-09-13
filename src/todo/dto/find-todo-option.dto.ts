@@ -1,27 +1,21 @@
-import {
-  IsBoolean,
-  IsIn,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 
 export class FindTodoOptionDto {
-  @IsBoolean()
+  @IsIn(['true', 'false'])
   @IsOptional()
-  onlyMine = true;
+  onlyMine: 'true' | 'false' = 'true';
 
-  @IsBoolean()
+  @IsIn(['true', 'false'])
   @IsOptional()
-  now = true;
+  now: 'true' | 'false' = 'true';
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  page = 1;
+  page = '1';
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  count = 10;
+  count = '10';
 
   @IsIn(['ASC', 'DESC'])
   sort: 'ASC' | 'DESC' = 'DESC';
@@ -29,4 +23,12 @@ export class FindTodoOptionDto {
   @IsString()
   @IsOptional()
   userid: string;
+
+  @IsString()
+  @IsOptional()
+  from: string;
+
+  @IsString()
+  @IsOptional()
+  to: string;
 }
